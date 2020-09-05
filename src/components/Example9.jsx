@@ -6,6 +6,7 @@ function sum(persons) {
 }
 
 const Example9 = () => {
+  const ref = React.useRef();
   const [value, setValue] = useState('');
   const [persons] = useState([
     { name: 'Mark', age: 38 },
@@ -20,10 +21,17 @@ const Example9 = () => {
     return sum(persons); // persons 바뀔때만 다시 계산해야 한다.
   }, [persons]);
 
+  const click = React.useCallback(() => {
+    console.log(persons);
+  }, [persons]);
+
+  console.log(ref.current);
+
   return (
     <div>
       <input value={value} onChange={change} />
-      <p>{count}</p>
+      <p ref={ref}>{count}</p>
+      <button onClick={click}>click</button>
     </div>
   );
 };
