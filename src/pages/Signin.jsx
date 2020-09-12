@@ -1,13 +1,9 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import SigninFormContainer from '../containers/SigninFormContainer';
+import useAuth from '../hooks/useAuth';
 
 export default function Signin() {
-  const token = localStorage.getItem('token');
-  if (token !== null) {
-    return <Redirect to="/" />;
-  }
-
+  useAuth(false);
   return (
     <div>
       <h1>Signin</h1>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import Home from './pages/Home';
@@ -8,6 +8,8 @@ import NotFound from './pages/NotFound';
 import Error from './pages/Error';
 
 import PersonContext from './contexts/PersonContext';
+import { ConnectedRouter } from 'connected-react-router';
+import { history } from './redux/create';
 
 const persons = [
   { name: 'Mark', age: 38 },
@@ -22,13 +24,13 @@ function App() {
   return (
     <ErrorBoundary Error={Error}>
       <PersonContext.Provider value={persons}>
-        <BrowserRouter>
+        <ConnectedRouter history={history}>
           <Switch>
             <Route path="/signin" component={Signin} />
             <Route path="/" exact component={Home} />
             <Route component={NotFound} />
           </Switch>
-        </BrowserRouter>
+        </ConnectedRouter>
       </PersonContext.Provider>
     </ErrorBoundary>
   );

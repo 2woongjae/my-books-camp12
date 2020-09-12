@@ -1,14 +1,15 @@
 import React from 'react';
-import withAuth from '../hocs/withAuth';
 import BookListContainer from '../containers/BookListContainer';
+import useAuth from '../hooks/useAuth';
 
-function Home({ token }) {
+function Home() {
+  useAuth(true);
   return (
     <div>
       <h1>Home</h1>
-      <BookListContainer token={token} />
+      <BookListContainer />
     </div>
   );
 }
 
-export default withAuth(Home);
+export default Home;

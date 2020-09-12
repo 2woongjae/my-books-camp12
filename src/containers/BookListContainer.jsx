@@ -1,10 +1,11 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getBooksThunk } from '../actions';
+import { startGetBooks } from '../redux/modules/books';
+import { startLogout } from '../redux/modules/auth';
 import { useCallback } from 'react';
 import BookList from '../components/BookList';
 
-export default function BookListContainer({ token }) {
+export default function BookListContainer() {
   // mapStateToProps
   const { books, loading, error } = useSelector((state) => state.books);
 
@@ -12,8 +13,14 @@ export default function BookListContainer({ token }) {
   const dispatch = useDispatch();
 
   const getBooks = useCallback(() => {
-    dispatch(getBooksThunk(token));
-  }, [dispatch, token]);
+    dispatch(startGetBooks());
+    dispatch(startGetBooks());
+    dispatch(startGetBooks());
+  }, [dispatch]);
+
+  const logout = useCallback(() => {
+    dispatch(startLogout());
+  }, [dispatch]);
 
   return (
     <BookList
@@ -21,14 +28,7 @@ export default function BookListContainer({ token }) {
       loading={loading}
       error={error}
       getBooks={getBooks}
+      logout={logout}
     />
   );
-}
-
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, ms);
-  });
 }
