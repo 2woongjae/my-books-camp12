@@ -4,6 +4,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import Home from './pages/Home';
 import Signin from './pages/Signin';
+import Add from './pages/Add';
 import NotFound from './pages/NotFound';
 import Error from './pages/Error';
 
@@ -26,6 +27,7 @@ function App() {
       <PersonContext.Provider value={persons}>
         <ConnectedRouter history={history}>
           <Switch>
+            <Route path="/add" component={Add} />
             <Route path="/signin" component={Signin} />
             <Route path="/" exact component={Home} />
             <Route component={NotFound} />

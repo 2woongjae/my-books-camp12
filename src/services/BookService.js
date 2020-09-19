@@ -14,9 +14,23 @@ export default class BookService {
     return response.data;
   }
 
-  static async addBook() {}
+  static async addBook(token, book) {
+    const response = await axios.post(API_URL, book, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  }
 
-  static async deleteBook() {}
+  static async removeBook(token, bookId) {
+    const response = await axios.delete(`${API_URL}/${bookId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  }
 
   static async editBook() {}
 }

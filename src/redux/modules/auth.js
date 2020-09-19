@@ -2,31 +2,24 @@ import UserService from '../../services/UserService';
 import TokenService from '../../services/TokenService';
 import { push } from 'connected-react-router';
 import { put, delay, call, takeLeading, select } from 'redux-saga/effects';
+import { createActions, handleActions, createAction } from 'redux-actions';
 
 // module
 
 // prefix
 const prefix = 'my-books/auth';
 
-// action types
-const START = `${prefix}/START`;
-const SUCCESS = `${prefix}/SUCCESS`;
-const FAIL = `${prefix}/FAIL`;
-
 // action creator
-const start = () => ({
-  type: START,
-});
-
-const success = (token) => ({
-  type: SUCCESS,
-  token,
-});
-
-const fail = (error) => ({
-  type: FAIL,
-  error,
-});
+const { start, success, fail } = createActions(
+  {
+    SUCCESS: (token) => ({ token }),
+  },
+  'START',
+  'FAIL',
+  {
+    prefix,
+  },
+);
 
 // initial state
 const initialState = {
@@ -36,46 +29,42 @@ const initialState = {
 };
 
 // reducer
-export default function reducer(state = initialState, action) {
-  switch (action.type) {
-    case START:
-      return {
-        token: null,
-        loading: true,
-        error: null,
-      };
-    case SUCCESS:
-      return {
-        token: action.token,
-        loading: false,
-        error: null,
-      };
-    case FAIL:
-      return {
-        token: null,
-        loading: false,
-        error: action.error,
-      };
-    default:
-      return state;
-  }
-}
+const reducer = handleActions(
+  {
+    START: () => ({
+      token: null,
+      loading: true,
+      error: null,
+    }),
+    SUCCESS: (state, action) => ({
+      token: action.payload.token,
+      loading: false,
+      error: null,
+    }),
+    FAIL: (state, action) => ({
+      token: null,
+      loading: false,
+      error: action.payload,
+    }),
+  },
+  initialState,
+  {
+    prefix,
+  },
+);
+
+export default reducer;
 
 // saga
 const START_LOGIN = `${prefix}/START_LOGIN`;
 const START_LOGOUT = `${prefix}/START_LOGOUT`;
 
-export const startLogin = (email, password) => ({
-  type: START_LOGIN,
-  payload: {
-    email,
-    password,
-  },
-});
+export const startLogin = createAction(`${START_LOGIN}`, (email, password) => ({
+  email,
+  password,
+}));
 
-export const startLogout = () => ({
-  type: START_LOGOUT,
-});
+export const startLogout = createAction(`${START_LOGOUT}`);
 
 function* startLoginSaga(action) {
   const { email, password } = action.payload;
